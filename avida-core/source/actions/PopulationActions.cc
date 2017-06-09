@@ -4533,6 +4533,52 @@ public:
   } //End Process()
 };
 
+/* Iterate over all cells and kill org in cell with probability m_prob unless
+   the specific resource is present in that cell at a level above threshold*/
+class cActionKillBelowResourceThresholdProbabilistic : public cAction
+{
+private:
+  cString m_resname;
+  double m_prob;
+  double m_threshold;
+public:
+  cActionKillBelowResourceThresholdProbabilistic(cWorld* world, const cString& args, Feedback&) : cAction(world, args), m_prob(0), m_threshold(0)
+  {
+    cString largs(args);
+    if (largs.GetSize()) m_prob = largs.PopWord().AsDouble();
+    if (largs.GetSize()) m_resname = largs.PopWord();
+    if (largs.GetSize()) m_threshold = largs.PopWord().AsDouble();
+  }
+
+  static const cString GetDescription() { return "Arguments: [double prob=0, string resource name, double threshold=0]"; }
+
+  void Process(cAvidaContext& ctx)
+  {
+    double level;
+    cPopulation& pop = m_world->GetPopulation();
+    int res_id = m_world->GetPopulation().GetResourceCount().GetResourceCountID(m_resname);
+
+    assert(res_id != -1);
+
+    long orgs_killed = 0;
+
+    for(int i=0; i < pop.GetSize(); i++) {
+      level = m_world->GetPopulation().GetResourceCount().GetSpatialResource(res_id).GetAmount(i);
+
+      if(level < m_threshold) {
+        cPopulationCell& cell = pop.GetCell(i);
+        if (cell.IsOccupied() && (ctx.GetRandom().P(m_prob))) {
+          pop.KillOrganism(cell, ctx);
+          orgs_killed++;
+      }
+      }
+
+    m_world->GetStats().AddNumOrgsKilled(orgs_killed);
+
+    } //End Process()
+  }
+};
+
 
 
 /*
