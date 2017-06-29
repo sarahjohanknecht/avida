@@ -4564,13 +4564,14 @@ public:
       level = m_world->GetPopulation().GetResourceCount().GetSpatialResource(res_id).GetAmount(i);
 
       if(level < m_threshold) {
-        cPopulationCell& cell = pop.GetCell(target_cell);
-        if (cell.IsOccupied() && ctx.GetRandom.P(m_prob)) {
+        cPopulationCell& cell = pop.GetCell(i);
+        if (cell.IsOccupied() && ctx.GetRandom().P(m_prob)) {
           pop.KillOrganism(cell, ctx);
           orgs_killed++;
+	}
       }
-    }
 
+    }
     m_world->GetStats().AddNumOrgsKilled(orgs_killed);
 
   } //End Process()
