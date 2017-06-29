@@ -5806,7 +5806,7 @@ void RegisterPopulationActions(cActionLibrary* action_lib)
   action_lib->Register<cActionPred_DemeResourceThresholdPredicate>("DemeResourceThresholdPredicate");
 
   action_lib->Register<cActionKillNBelowResourceThreshold>("KillNBelowResourceThreshold");
-  action_lib->Register<cActionKillBelowResourceThresholdProbabilistic>("KillBelowResourceThresholdProbabilisitic");
+  action_lib->Register<cActionKillBelowResourceThresholdProbabilistic>("KillBelowResourceThresholdProbabilistic");
   action_lib->Register<cActionKillWithinRadiusBelowResourceThreshold>("KillWithinRadiusBelowResourceThreshold");
   action_lib->Register<cActionKillWithinRadiusMeanBelowResourceThreshold>("KillWithinRadiusMeanBelowResourceThreshold");
   action_lib->Register<cActionKillWithinRadiusBelowResourceThresholdTestAll>("KillWithinRadiusBelowResourceThresholdTestAll");
